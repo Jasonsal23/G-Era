@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { CheckCircle } from 'lucide-react';
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/store/cart';
 import { useLanguage } from '@/context/language-context';
 
-export default function SuccessPage() {
+const SuccessContent = () => {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
   const { clearCart, setCartOpen } = useCartStore();
@@ -76,5 +76,13 @@ export default function SuccessPage() {
         </div>
       </section>
     </div>
+  );
+};
+
+export default function SuccessPage() {
+  return (
+    <Suspense>
+      <SuccessContent />
+    </Suspense>
   );
 }
