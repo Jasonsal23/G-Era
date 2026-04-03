@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Header } from '@/components/ui/header';
 import { AnnouncementBar } from '@/components/ui/announcement-bar';
+import { ChatbotCartBridge } from '@/components/ui/chatbot-cart-bridge';
 import { CartDrawer } from '@/components/ui/cart-drawer';
 import { Footer } from '@/components/ui/footer';
 import { EmailPopup } from '@/components/ui/email-popup';
@@ -37,8 +39,10 @@ export default function RootLayout({
           <main>{children}</main>
           <CartDrawer />
           <EmailPopup />
+          <ChatbotCartBridge />
           <Footer />
         </LanguageProvider>
+        <script src="https://ai-chat-service-production-9741.up.railway.app/widget.js" data-client-id="g-era" data-server="https://ai-chat-service-production-9741.up.railway.app"></script>
       </body>
     </html>
   );
