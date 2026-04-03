@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ShoppingBag } from 'lucide-react';
 import { Button } from './button';
 import type { Product } from '@/types';
 import { useCartStore } from '@/store/cart';
@@ -91,7 +92,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <select
             value={isHat ? selectedVariant : selectedSize}
             onChange={(e) => isHat ? setSelectedVariant(e.target.value) : setSelectedSize(e.target.value)}
-            className="flex-1 min-w-0 border-2 border-foreground bg-background px-2 py-2 text-[11px] font-bold uppercase tracking-widest focus:border-accent focus:outline-none"
+            className="flex-1 min-w-0 border-2 border-foreground bg-background px-1 py-2 text-[10px] font-bold uppercase tracking-normal sm:tracking-widest focus:border-accent focus:outline-none"
           >
             <option value="">{isHat ? t.product.style : t.product.size}</option>
             {isHat
@@ -106,11 +107,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <Button
             variant="accent"
             size="md"
-            className="flex-1 min-w-0 whitespace-nowrap"
+            className="flex-1 min-w-0"
             onClick={handleAddToCart}
             disabled={!canAdd}
           >
-            {product.inStock ? t.product.addToCart : t.product.soldOut}
+            <span className="hidden sm:inline whitespace-nowrap">
+              {product.inStock ? t.product.addToCart : t.product.soldOut}
+            </span>
+            <ShoppingBag size={16} className="sm:hidden" />
           </Button>
         </div>
       </div>
