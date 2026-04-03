@@ -41,6 +41,7 @@ export const createCheckoutSession = async (
       allowed_countries: ['US', 'CA', 'MX'],
     },
     shipping_options: shippingOptions,
+    allow_promotion_codes: true,
     ...(metadata && { metadata }),
   });
 };

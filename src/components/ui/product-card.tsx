@@ -107,7 +107,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <Button
             variant="accent"
             size="md"
-            className="flex-1 min-w-0"
+            className="flex-1 min-w-0 flex items-center justify-center"
             onClick={handleAddToCart}
             disabled={!canAdd}
           >
