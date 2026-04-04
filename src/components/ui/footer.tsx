@@ -29,7 +29,7 @@ export const Footer = () => {
             <a href="https://instagram.com/g.era21" target="_blank" rel="noopener noreferrer" className="p-2 transition-colors hover:text-accent" aria-label="Follow us on Instagram">
               <InstagramIcon size={24} />
             </a>
-            <a href="https://tiktok.com/@g.era21" target="_blank" rel="noopener noreferrer" className="p-2 transition-colors hover:text-accent" aria-label="Follow us on TikTok">
+            <a href="https://tiktok.com/@g.era75" target="_blank" rel="noopener noreferrer" className="p-2 transition-colors hover:text-accent" aria-label="Follow us on TikTok">
               <TikTokIcon size={24} />
             </a>
           </div>
