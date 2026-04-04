@@ -15,7 +15,7 @@ export const products: Product[] = [
     id: 'black-blingout-bart-tee',
     name: 'Gold AK Bart Tee — Black',
     description: 'Strapped, blinged out, and ready for whatever — that\'s the G.Era way. Gold AK on the back, skull belt buckle, no fear in the eyes. This ain\'t a cartoon tee. This is a statement. Heavyweight black cotton, bold back graphic. Wear it like you mean it.',
-    priceInCents: 4500,
+    priceInCents: 5000,
     images: [
       '/images/products/blackblingoutbartthsirt-back.png',
       '/images/products/blackblingoutbartthsirt-front.png',
@@ -28,7 +28,7 @@ export const products: Product[] = [
     id: 'black-party-bart-tee',
     name: 'Champagne Bart Tee — Black',
     description: 'La fiesta no empieza hasta que llegamos. Gold medallion out, red bottoms kicked up, champagne in hand — this is how the G.Era shows up. Black heavyweight tee, full back graphic. Los que saben, ya saben.',
-    priceInCents: 4500,
+    priceInCents: 5000,
     images: [
       '/images/products/blackpartybarttshirt-back.png',
       '/images/products/blackpartybarttshirt-front.png',
@@ -41,7 +41,7 @@ export const products: Product[] = [
     id: 'green-redbottom-bart-tee',
     name: 'Red Bottom Bart Tee — Olive',
     description: 'Tuxedo on, red bottoms flipped, skull ring on the finger — dressed like money doesn\'t even cover it. This is that belico luxury energy on an olive tee that hits different from every angle. Premium heavyweight cotton. Not for the weak.',
-    priceInCents: 4500,
+    priceInCents: 5000,
     images: [
       '/images/products/greenredbottombarttshirt-back.png',
       '/images/products/greenredbottombarttshirt-front.png',
@@ -110,7 +110,7 @@ export const products: Product[] = [
     id: 'women-orange-redbottom-bart-tee',
     name: 'Red Bottom Bart Tee — Salmon Pink',
     description: 'Las que mandan wear Pink. Tuxedo drip, red bottoms kicked up, skull ring out — rhinestones on every bling detail that catch the light from across the room. All on a bold pink tee built for women who don\'t move quiet. Premium cotton, fitted cut. Walk in and take over.',
-    priceInCents: 4500,
+    priceInCents: 5000,
     images: [
       '/images/products/womenredbottombarttshirtorange-back.png',
       '/images/products/womenredbottombarttshirtorange-front.png',
@@ -123,7 +123,7 @@ export const products: Product[] = [
     id: 'women-pink-party-bart-tee',
     name: 'Champagne Bart Tee — Rose Pink',
     description: 'Pink doesn\'t mean soft. Gold medallion out, red bottoms kicked up, champagne already open — rhinestones on the bling details that hit different under every light. This tee moves with the energy of a woman who knows exactly where she\'s going. Heavyweight pink cotton, full drip on the back.',
-    priceInCents: 4500,
+    priceInCents: 5000,
     images: [
       '/images/products/womenpartybartpinktshirt-back.png',
       '/images/products/womenpartybartpinktshirt-front.png',
@@ -136,7 +136,7 @@ export const products: Product[] = [
     id: 'women-white-party-bart-tee',
     name: 'Champagne Bart Tee — Cream',
     description: 'Clean white, full drip — the hardest combination in the game. Gold medallion, champagne, red bottoms all on the back, with rhinestones on the bling pieces that pop against the crisp white. Walk in looking like a whole moment. Heavyweight cotton, drop shoulders. Sin pretextos.',
-    priceInCents: 4500,
+    priceInCents: 5000,
     images: [
       '/images/products/womenpartybartwhitetshirt-back.png',
       '/images/products/womenpartybartwhitetshirt-front.png',
@@ -151,7 +151,7 @@ export const products: Product[] = [
     id: 'bart-hats',
     name: 'Bart Snapback Hat — One Size',
     description: 'All G.Era, no exceptions. Each style rocks a different Bart graphic for the ones who know the culture. Structured crown, clean finish. Pick yours and pull up.',
-    priceInCents: 3500,
+    priceInCents: 4000,
     images: ['/images/products/barthats1.png'],
     variants: [
       {
@@ -212,7 +212,7 @@ export const products: Product[] = [
     id: 'hellcat-hat',
     name: 'Hellcat Snapback Hat — One Size',
     description: 'Hellcat logo front and center. Built for the ones who don\'t fold under pressure. Structured crown, clean brim. More styles coming soon — stay ready.',
-    priceInCents: 3500,
+    priceInCents: 4000,
     images: ['/images/products/hellcathats.png'],
     variants: [
       {

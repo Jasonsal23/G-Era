@@ -70,7 +70,7 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const SIZES = ['S', 'M', 'L', 'XL', '2XL'];
+  const SIZES = product?.category === 'women' ? ['S', 'M', 'L', 'XL'] : ['S', 'M', 'L', 'XL', '2XL'];
 
   // Hats: show the selected variant's images (main + brim)
   // Clothing with variants: show one image per variant
@@ -353,17 +353,15 @@ export default function ProductDetailPage() {
                   </div>
                 </AccordionItem>
 
-                <AccordionItem title={t.product.returnPolicy}>
+                <AccordionItem title={t.product.contactUs}>
                   <div className="space-y-2">
-                    <p>{t.product.return30}</p>
-                    <p>{t.product.returnOriginal}</p>
-                    <p>{t.product.returnRefund}</p>
-                    <Link
-                      href="/returns"
-                      className="inline-block mt-2 text-accent font-semibold uppercase tracking-widest hover:underline"
+                    <p>{t.product.contactBody}</p>
+                    <a
+                      href="mailto:g.erabrand21@gmail.com"
+                      className="inline-block mt-1 text-accent font-semibold uppercase tracking-widest hover:underline"
                     >
-                      {t.product.startReturn} →
-                    </Link>
+                      g.erabrand21@gmail.com
+                    </a>
                   </div>
                 </AccordionItem>
               </div>

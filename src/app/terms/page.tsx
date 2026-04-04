@@ -77,20 +77,23 @@ export default function TermsPage() {
                 Shipping and Delivery
               </h2>
               <p className="mt-4 font-mono text-sm leading-relaxed text-gray-600">
-                Shipping times and costs vary by location. We are not responsible for delays
-                caused by shipping carriers or customs processing. Risk of loss and title
-                for items pass to you upon delivery to the carrier.
+                We offer free shipping on all orders — no code needed. Shipping times vary by
+                location. Standard shipping is 5-7 business days; express shipping is 2-3
+                business days. We are not responsible for delays caused by shipping carriers
+                or customs processing.
               </p>
             </div>
 
             <div>
               <h2 className="text-2xl font-black uppercase tracking-tight">
-                Returns and Refunds
+                Questions & Orders
               </h2>
               <p className="mt-4 font-mono text-sm leading-relaxed text-gray-600">
-                We offer a 30-day return policy for unworn items in original packaging with
-                tags attached. Refunds will be processed to the original payment method within
-                5-7 business days of receiving the returned item. Shipping costs are non-refundable.
+                Any questions or concerns about your order? Contact us directly at{' '}
+                <a href="mailto:g.erabrand21@gmail.com" className="text-accent hover:underline">
+                  g.erabrand21@gmail.com
+                </a>{' '}
+                and we&apos;ll take care of you.
               </p>
             </div>
 

@@ -39,8 +39,6 @@ export const Footer = () => {
             <Link href="/privacy" className="transition-colors hover:text-accent">{t.footer.privacy}</Link>
             <span className="hidden sm:inline">|</span>
             <Link href="/terms" className="transition-colors hover:text-accent">{t.footer.terms}</Link>
-            <span className="hidden sm:inline">|</span>
-            <Link href="/returns" className="transition-colors hover:text-accent">{t.footer.returns}</Link>
           </div>
           <p className="font-mono text-xs uppercase tracking-widest text-gray-500">
             &copy; {new Date().getFullYear()} G.Era. {t.footer.rights}

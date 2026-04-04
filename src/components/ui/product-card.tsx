@@ -9,7 +9,10 @@ import type { Product } from '@/types';
 import { useCartStore } from '@/store/cart';
 import { useLanguage } from '@/context/language-context';
 
-const SIZES = ['S', 'M', 'L', 'XL', '2XL'];
+const SIZE_OPTIONS: Record<string, string[]> = {
+  men: ['S', 'M', 'L', 'XL', '2XL'],
+  women: ['S', 'M', 'L', 'XL'],
+};
 
 interface ProductCardProps {
   product: Product;
@@ -99,7 +102,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               ? hatVariants.map((v) => (
                   <option key={v.label} value={v.label}>{v.label}</option>
                 ))
-              : SIZES.map((s) => (
+              : (SIZE_OPTIONS[product.category] ?? SIZE_OPTIONS.men).map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))
             }
