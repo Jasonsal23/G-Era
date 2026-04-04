@@ -31,23 +31,11 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // Calculate order total to determine shipping options
-    const orderTotalCents = body.items.reduce(
-      (sum, item) => sum + item.priceInCents * item.quantity,
-      0
-    );
-
-    // Free shipping unlocks at $100+, otherwise offer standard + express
-    const shippingOptions = orderTotalCents >= 10000
-      ? [
-          { shipping_rate: 'shr_1THuPfJwIdpAFh8r456b2cd0' }, // free
-          { shipping_rate: 'shr_1THuLPJwIdpAFh8rGaaWzycz' }, // standard
-          { shipping_rate: 'shr_1THuM2JwIdpAFh8rcvpQXce5' }, // express
-        ]
-      : [
-          { shipping_rate: 'shr_1THuLPJwIdpAFh8rGaaWzycz' }, // standard
-          { shipping_rate: 'shr_1THuM2JwIdpAFh8rcvpQXce5' }, // express
-        ];
+    // Free standard shipping on all orders; express available for upgrade
+    const shippingOptions = [
+      { shipping_rate: 'shr_1THuPfJwIdpAFh8r456b2cd0' }, // free
+      { shipping_rate: 'shr_1THuM2JwIdpAFh8rcvpQXce5' }, // express
+    ];
 
     const session = await createCheckoutSession(
       lineItems,
