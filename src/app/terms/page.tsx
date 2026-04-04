@@ -77,10 +77,10 @@ export default function TermsPage() {
                 Shipping and Delivery
               </h2>
               <p className="mt-4 font-mono text-sm leading-relaxed text-gray-600">
-                We offer free shipping on all orders — no code needed. Shipping times vary by
-                location. Standard shipping is 5-7 business days; express shipping is 2-3
-                business days. We are not responsible for delays caused by shipping carriers
-                or customs processing.
+                We offer free standard shipping on all US orders — no code needed. Standard
+                shipping is 5-7 business days. Express shipping (2-3 business days) is
+                available at checkout. International shipping is available and rates apply.
+                We are not responsible for delays caused by shipping carriers or customs processing.
               </p>
             </div>
 

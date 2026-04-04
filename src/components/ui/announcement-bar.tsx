@@ -1,5 +1,5 @@
 // ─── Edit this message to update the announcement ───────────────────────────
-const ANNOUNCEMENT = 'Free shipping on all orders — No code needed.';
+const ANNOUNCEMENT = 'Free shipping on all US orders — No code needed.';
 // ────────────────────────────────────────────────────────────────────────────
 
 export const AnnouncementBar = () => {

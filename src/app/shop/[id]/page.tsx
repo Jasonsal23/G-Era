@@ -72,12 +72,14 @@ export default function ProductDetailPage() {
 
   const SIZES = product?.category === 'women' ? ['S', 'M', 'L', 'XL'] : ['S', 'M', 'L', 'XL', '2XL'];
 
-  // Hats: show the selected variant's images (main + brim)
+  // Hats: show hero image until a style is selected, then show variant images
   // Clothing with variants: show one image per variant
   // No variants: show product images
   const displayImages = product?.variants
     ? isHat
-      ? (product.variants[selectedVariantIndex]?.images ?? [])
+      ? selectedVariantIndex === -1
+        ? (product.images ?? [])
+        : (product.variants[selectedVariantIndex]?.images ?? [])
       : product.variants.map((v) => v.images[0] ?? '')
     : product?.images ?? [];
 
@@ -233,6 +235,7 @@ export default function ProductDetailPage() {
                       }}
                       className="w-full border-2 border-foreground bg-background px-3 py-2.5 text-sm font-semibold uppercase tracking-widest focus:border-accent focus:outline-none"
                     >
+                      <option value={-1}>{t.product.selectStyle}</option>
                       {product.variants.map((variant, index) => (
                         <option key={index} value={index}>
                           {variant.label}
