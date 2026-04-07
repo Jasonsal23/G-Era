@@ -8,6 +8,7 @@ import { CartDrawer } from '@/components/ui/cart-drawer';
 import { Footer } from '@/components/ui/footer';
 import { EmailPopup } from '@/components/ui/email-popup';
 import { LanguageProvider } from '@/context/language-context';
+import { InventoryLoader } from '@/components/ui/inventory-loader';
 import './globals.css';
 
 const geistSans = Geist({
@@ -37,6 +38,7 @@ export default function RootLayout({
           <AnnouncementBar />
           <Header />
           <main>{children}</main>
+          <InventoryLoader />
           <CartDrawer />
           <EmailPopup />
           <ChatbotCartBridge />

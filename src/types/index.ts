@@ -46,6 +46,7 @@ export interface ShippingAddress {
 export interface CheckoutRequest {
   items: {
     priceId: string;
+    productId: string;
     quantity: number;
     priceInCents: number;
     productName?: string;

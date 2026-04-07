@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
+import { decrementInventory } from '@/lib/inventory';
 import type Stripe from 'stripe';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -63,9 +64,28 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
   console.log('Customer email:', session.customer_details?.email);
   console.log('Amount total:', session.amount_total);
 
-  // TODO: Implement order fulfillment logic
-  // 1. Save order to database
-  // 2. Update inventory
-  // 3. Send confirmation email
-  // 4. Trigger shipping process
+  // Retrieve line items to get product quantities
+  const lineItems = await stripe.instance.checkout.sessions.listLineItems(session.id, {
+    limit: 100,
+  });
+
+  // Build decrement list from session metadata
+  // metadata keys are product names, values are variant labels
+  // We also need product IDs — stored as item_0_product_id, item_1_product_id in metadata
+  const itemsToDecrement: { productId: string; variantLabel: string; quantity: number }[] = [];
+
+  lineItems.data.forEach((lineItem, index) => {
+    const productId = session.metadata?.[`item_${index}_product_id`];
+    const variantLabel = session.metadata?.[`item_${index}_variant`] ?? '';
+    const quantity = lineItem.quantity ?? 1;
+
+    if (productId) {
+      itemsToDecrement.push({ productId, variantLabel, quantity });
+    }
+  });
+
+  if (itemsToDecrement.length > 0) {
+    await decrementInventory(itemsToDecrement);
+    console.log('Inventory decremented for', itemsToDecrement.length, 'items');
+  }
 }

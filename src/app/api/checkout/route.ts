@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createCheckoutSession } from '@/lib/stripe';
+import { validateStock } from '@/lib/inventory';
 import type { CheckoutRequest } from '@/types';
 
 export async function POST(request: NextRequest) {
@@ -15,19 +16,33 @@ export async function POST(request: NextRequest) {
 
     const origin = request.headers.get('origin') || 'http://localhost:3000';
 
+    // Validate stock before creating Stripe session
+    const stockError = await validateStock(
+      body.items.map((item) => ({
+        productId: item.productId,
+        variantLabel: item.variantLabel ?? '',
+        quantity: item.quantity,
+      }))
+    );
+
+    if (stockError) {
+      return NextResponse.json({ error: stockError }, { status: 400 });
+    }
+
     const lineItems = body.items.map((item) => ({
       price: item.priceId,
       quantity: item.quantity,
     }));
 
-    // Build metadata so variant selections are visible in Stripe dashboard
+    // Build metadata — product IDs and variants so the webhook can decrement inventory
     const metadata: Record<string, string> = {};
     body.items.forEach((item, index) => {
+      metadata[`item_${index}_product_id`] = item.productId;
       if (item.variantLabel) {
-        const key = item.productName
-          ? `${item.productName} (item ${index + 1})`
-          : `item_${index + 1}`;
-        metadata[key] = item.variantLabel;
+        metadata[`item_${index}_variant`] = item.variantLabel;
+      }
+      if (item.productName) {
+        metadata[`item_${index}_name`] = item.productName;
       }
     });
 

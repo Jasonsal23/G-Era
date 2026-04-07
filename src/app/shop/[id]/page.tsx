@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ProductGrid } from '@/components/shop/product-grid';
 import { getProductById, products } from '@/data/products';
 import { useCartStore } from '@/store/cart';
+import { useInventoryStore } from '@/store/inventory';
 import { useLanguage } from '@/context/language-context';
 import type { Product } from '@/types';
 
@@ -62,6 +63,8 @@ export default function ProductDetailPage() {
   const productId = params.id as string;
   const product = getProductById(productId);
   const addItem = useCartStore((state) => state.addItem);
+  const isInStock = useInventoryStore((s) => s.isInStock);
+  const hasAnyStock = useInventoryStore((s) => s.hasAnyStock);
   const { t } = useLanguage();
   const isHat = product?.category === 'hats';
 
@@ -137,7 +140,7 @@ export default function ProductDetailPage() {
                     <span className="text-gray-400">No image</span>
                   </div>
                 )}
-                {!product.inStock && (
+                {!hasAnyStock(product.id) && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/70 pointer-events-none">
                     <span className="text-2xl font-bold uppercase tracking-widest text-white">
                       Sold Out
@@ -283,19 +286,25 @@ export default function ProductDetailPage() {
                     )}
                   </p>
                   <div className="flex gap-2 flex-wrap">
-                    {SIZES.map((size) => (
-                      <button
-                        key={size}
-                        onClick={() => setSelectedSize(size)}
-                        className={`border-2 px-4 py-2 text-sm font-bold uppercase tracking-widest transition-colors ${
-                          selectedSize === size
-                            ? 'border-accent bg-accent text-background'
-                            : 'border-foreground hover:border-accent'
-                        }`}
-                      >
-                        {size}
-                      </button>
-                    ))}
+                    {SIZES.map((size) => {
+                      const sizeInStock = isInStock(product.id, size);
+                      return (
+                        <button
+                          key={size}
+                          onClick={() => sizeInStock && setSelectedSize(size)}
+                          disabled={!sizeInStock}
+                          className={`border-2 px-4 py-2 text-sm font-bold uppercase tracking-widest transition-colors ${
+                            selectedSize === size
+                              ? 'border-accent bg-accent text-background'
+                              : sizeInStock
+                              ? 'border-foreground hover:border-accent'
+                              : 'border-gray-300 text-gray-300 cursor-not-allowed line-through'
+                          }`}
+                        >
+                          {size}
+                        </button>
+                      );
+                    })}
                   </div>
                   {!selectedSize && (
                     <p className="mt-2 text-xs font-mono text-gray-400">{t.product.selectSizePrompt}</p>
@@ -317,12 +326,12 @@ export default function ProductDetailPage() {
                     addItem(product, label);
                   }}
                   disabled={
-                    !product.inStock ||
-                    (product.category === 'hats' && !product.variants?.[selectedVariantIndex]?.label) ||
-                    (product.category !== 'hats' && !selectedSize)
+                    !hasAnyStock(product.id) ||
+                    (product.category === 'hats' && (!product.variants?.[selectedVariantIndex]?.label || !isInStock(product.id, product.variants?.[selectedVariantIndex]?.label ?? ''))) ||
+                    (product.category !== 'hats' && (!selectedSize || !isInStock(product.id, selectedSize)))
                   }
                 >
-                  {product.inStock ? t.product.addToCart : t.product.soldOut}
+                  {hasAnyStock(product.id) ? t.product.addToCart : t.product.soldOut}
                 </Button>
               </div>
 

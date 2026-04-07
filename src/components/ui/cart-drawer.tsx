@@ -34,6 +34,7 @@ export const CartDrawer = () => {
         body: JSON.stringify({
           items: items.map((item) => ({
             priceId: item.product.stripePriceId,
+            productId: item.product.id,
             quantity: item.quantity,
             priceInCents: item.product.priceInCents,
             productName: item.product.name,

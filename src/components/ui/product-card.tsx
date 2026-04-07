@@ -7,6 +7,7 @@ import { ShoppingBag } from 'lucide-react';
 import { Button } from './button';
 import type { Product } from '@/types';
 import { useCartStore } from '@/store/cart';
+import { useInventoryStore } from '@/store/inventory';
 import { useLanguage } from '@/context/language-context';
 
 const SIZE_OPTIONS: Record<string, string[]> = {
@@ -20,6 +21,8 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const addItem = useCartStore((state) => state.addItem);
+  const isInStock = useInventoryStore((s) => s.isInStock);
+  const hasAnyStock = useInventoryStore((s) => s.hasAnyStock);
   const { t } = useLanguage();
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedVariant, setSelectedVariant] = useState('');
@@ -45,7 +48,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     addItem(product, isHat ? selectedVariant : selectedSize);
   };
 
-  const canAdd = product.inStock && (isHat ? !!selectedVariant : !!selectedSize);
+  const productInStock = hasAnyStock(product.id);
+  const selectedInStock = isHat
+    ? isInStock(product.id, selectedVariant)
+    : isInStock(product.id, selectedSize);
+  const canAdd = productInStock && (isHat ? !!selectedVariant : !!selectedSize) && selectedInStock;
 
   return (
     <div className="group flex flex-col border-2 border-foreground bg-background">
@@ -62,7 +69,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             <span className="text-gray-400">No image</span>
           </div>
         )}
-        {!product.inStock && (
+        {!productInStock && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/70">
             <span className="text-lg font-bold uppercase tracking-widest text-white">
               Sold Out
@@ -99,12 +106,22 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           >
             <option value="">{isHat ? t.product.style : t.product.size}</option>
             {isHat
-              ? hatVariants.map((v) => (
-                  <option key={v.label} value={v.label}>{v.label}</option>
-                ))
-              : (SIZE_OPTIONS[product.category] ?? SIZE_OPTIONS.men).map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))
+              ? hatVariants.map((v) => {
+                  const inStock = isInStock(product.id, v.label);
+                  return (
+                    <option key={v.label} value={v.label} disabled={!inStock}>
+                      {v.label}{!inStock ? ' — Sold Out' : ''}
+                    </option>
+                  );
+                })
+              : (SIZE_OPTIONS[product.category] ?? SIZE_OPTIONS.men).map((s) => {
+                  const inStock = isInStock(product.id, s);
+                  return (
+                    <option key={s} value={s} disabled={!inStock}>
+                      {s}{!inStock ? ' — Sold Out' : ''}
+                    </option>
+                  );
+                })
             }
           </select>
           <Button
@@ -115,7 +132,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             disabled={!canAdd}
           >
             <span className="hidden sm:inline whitespace-nowrap">
-              {product.inStock ? t.product.addToCart : t.product.soldOut}
+              {productInStock ? t.product.addToCart : t.product.soldOut}
             </span>
             <ShoppingBag size={16} className="sm:hidden" />
           </Button>
