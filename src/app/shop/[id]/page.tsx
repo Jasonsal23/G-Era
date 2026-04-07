@@ -331,7 +331,16 @@ export default function ProductDetailPage() {
                     (product.category !== 'hats' && (!selectedSize || !isInStock(product.id, selectedSize)))
                   }
                 >
-                  {hasAnyStock(product.id) ? t.product.addToCart : t.product.soldOut}
+                  {(() => {
+                    if (!hasAnyStock(product.id)) return t.product.soldOut;
+                    if (isHat) {
+                      const label = product.variants?.[selectedVariantIndex]?.label ?? '';
+                      if (label && !isInStock(product.id, label)) return t.product.soldOut;
+                    } else {
+                      if (selectedSize && !isInStock(product.id, selectedSize)) return t.product.soldOut;
+                    }
+                    return t.product.addToCart;
+                  })()}
                 </Button>
               </div>
 

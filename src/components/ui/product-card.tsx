@@ -132,7 +132,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             disabled={!canAdd}
           >
             <span className="hidden sm:inline whitespace-nowrap">
-              {productInStock ? t.product.addToCart : t.product.soldOut}
+              {!productInStock || (isHat ? (!!selectedVariant && !selectedInStock) : (!!selectedSize && !selectedInStock))
+                ? t.product.soldOut
+                : t.product.addToCart}
             </span>
             <ShoppingBag size={16} className="sm:hidden" />
           </Button>
