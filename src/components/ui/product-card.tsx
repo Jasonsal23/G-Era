@@ -23,6 +23,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const addItem = useCartStore((state) => state.addItem);
   const isInStock = useInventoryStore((s) => s.isInStock);
   const hasAnyStock = useInventoryStore((s) => s.hasAnyStock);
+  const inventoryLoading = useInventoryStore((s) => s.loading);
   const { t } = useLanguage();
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedVariant, setSelectedVariant] = useState('');
@@ -48,7 +49,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     addItem(product, isHat ? selectedVariant : selectedSize);
   };
 
-  const productInStock = hasAnyStock(product.id);
+  const productInStock = inventoryLoading || hasAnyStock(product.id);
   const selectedInStock = isHat
     ? isInStock(product.id, selectedVariant)
     : isInStock(product.id, selectedSize);
