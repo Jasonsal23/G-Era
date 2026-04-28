@@ -48,8 +48,8 @@ export async function POST(request: NextRequest) {
 
     // Free standard shipping on all orders; express available for upgrade
     const shippingOptions = [
-      { shipping_rate: 'shr_1THuPfJwIdpAFh8r456b2cd0' }, // free
-      { shipping_rate: 'shr_1THuM2JwIdpAFh8rcvpQXce5' }, // express
+      { shipping_rate: 'shr_1TR4uVJzxUWJqIBzZXdPiolC' }, // free
+      { shipping_rate: 'shr_1TR4vVJzxUWJqIBzK8dbR9H2' }, // express
     ];
 
     const session = await createCheckoutSession(

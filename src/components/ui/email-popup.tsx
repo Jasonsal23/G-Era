@@ -47,12 +47,20 @@ export const EmailPopup = () => {
     setState('minimized');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
 
-    // TODO: wire to email service (Klaviyo, Mailchimp, etc.)
-    // For now: mark subscribed and show success
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+    } catch {
+      // Still show success even if email fails — don't block the user
+    }
+
     localStorage.setItem(STORAGE_KEY, 'true');
     setSubmitted(true);
   };
