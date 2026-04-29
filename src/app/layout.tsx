@@ -22,8 +22,38 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'G.Era',
-  description: 'Premium merchandise with minimalist editorial design',
+  title: {
+    default: 'G.Era | Street Luxe. No Apologies.',
+    template: '%s | G.Era',
+  },
+  description: 'G.Era is a street luxury brand bringing blinged-out, belico energy to premium apparel and hats. Shop exclusive tees, hoodies, and snapbacks.',
+  keywords: ['G.Era', 'street luxury', 'streetwear', 'blinged out', 'belico', 'hats', 'snapback', 'hoodies', 'tees', 'urban fashion'],
+  metadataBase: new URL('https://g-era.com'),
+  openGraph: {
+    type: 'website',
+    siteName: 'G.Era',
+    title: 'G.Era | Street Luxe. No Apologies.',
+    description: 'G.Era is a street luxury brand bringing blinged-out, belico energy to premium apparel and hats.',
+    url: 'https://g-era.com',
+    images: [
+      {
+        url: '/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'G.Era — Street Luxe. No Apologies.',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'G.Era | Street Luxe. No Apologies.',
+    description: 'G.Era is a street luxury brand bringing blinged-out, belico energy to premium apparel and hats.',
+    images: ['/images/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

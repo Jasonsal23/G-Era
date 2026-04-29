@@ -58,6 +58,19 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <div className="group flex flex-col border-2 border-foreground bg-background">
       <Link href={`/shop/${product.id}`} className="relative block aspect-square overflow-hidden">
+        {/* Preload all hat variant images in background so swapping is instant */}
+        {isHat && hatVariants.map((v) =>
+          v.images[0] ? (
+            <Image
+              key={v.label}
+              src={v.images[0]}
+              alt=""
+              fill
+              className="hidden"
+              aria-hidden="true"
+            />
+          ) : null
+        )}
         {displayImage ? (
           <Image
             src={displayImage}
