@@ -12,7 +12,6 @@ export interface Product {
   variants?: ProductVariant[];
   category: string;
   inStock: boolean;
-  stripePriceId: string;
 }
 
 export interface CartItem {
@@ -26,7 +25,7 @@ export interface Order {
   items: CartItem[];
   totalInCents: number;
   status: 'pending' | 'processing' | 'completed' | 'cancelled';
-  stripeSessionId: string;
+  squareOrderId: string;
   customerEmail: string;
   shippingAddress: ShippingAddress;
   createdAt: Date;
@@ -43,15 +42,18 @@ export interface ShippingAddress {
   country: string;
 }
 
+export type ShippingMethod = 'free' | 'express';
+
 export interface CheckoutRequest {
   items: {
-    priceId: string;
     productId: string;
     quantity: number;
     priceInCents: number;
     productName?: string;
     variantLabel?: string;
   }[];
+  shippingMethod: ShippingMethod;
+  promoCode?: string;
 }
 
 export interface CheckoutResponse {

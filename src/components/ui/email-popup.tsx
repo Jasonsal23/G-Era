@@ -6,7 +6,6 @@ import { X, Mail, CheckCircle } from 'lucide-react';
 import { Button } from './button';
 import { useLanguage } from '@/context/language-context';
 
-const DISCOUNT_CODE = 'GERA10';
 const STORAGE_KEY = 'gera-email-subscribed';
 const DISMISSED_KEY = 'gera-popup-dismissed';
 
@@ -18,6 +17,7 @@ export const EmailPopup = () => {
   const [state, setState] = useState<PopupState>('hidden');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [promoCode, setPromoCode] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -52,11 +52,13 @@ export const EmailPopup = () => {
     if (!email.trim()) return;
 
     try {
-      await fetch('/api/subscribe', {
+      const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
+      const data = await response.json();
+      if (data.code) setPromoCode(data.code);
     } catch {
       // Still show success even if email fails — don't block the user
     }
@@ -151,11 +153,15 @@ export const EmailPopup = () => {
                     {p.successTitle}
                   </h2>
                   <p className="mt-3 font-mono text-sm text-gray-500">{p.successBody}</p>
-                  <div className="my-4 border-2 border-foreground bg-foreground px-6 py-3 text-center">
-                    <span className="font-mono text-2xl font-black tracking-widest text-background">
-                      {DISCOUNT_CODE}
-                    </span>
-                  </div>
+                  {promoCode ? (
+                    <div className="my-4 border-2 border-foreground bg-foreground px-6 py-3 text-center">
+                      <span className="font-mono text-2xl font-black tracking-widest text-background">
+                        {promoCode}
+                      </span>
+                    </div>
+                  ) : (
+                    <p className="my-4 font-mono text-sm text-gray-500">{p.successNoCode}</p>
+                  )}
                   <p className="mb-6 font-mono text-xs text-gray-400">{p.successNote}</p>
                   <Link href="/shop" onClick={handleSuccessClose}>
                     <Button variant="accent" size="lg" className="w-full">

@@ -22,7 +22,6 @@ export const products: Product[] = [
     ],
     category: 'men',
     inStock: true,
-    stripePriceId: 'price_1TQaeWJzxUWJqIBzF56aS5Hy',
   },
   {
     id: 'black-party-bart-tee',
@@ -35,7 +34,6 @@ export const products: Product[] = [
     ],
     category: 'men',
     inStock: true,
-    stripePriceId: 'price_1TQaeWJzxUWJqIBzjJpc8Utl',
   },
   {
     id: 'green-redbottom-bart-tee',
@@ -48,7 +46,6 @@ export const products: Product[] = [
     ],
     category: 'men',
     inStock: true,
-    stripePriceId: 'price_1TQaeUJzxUWJqIBz2ayjTJVu',
   },
 
   // ── Men's Hoodies ────────────────────────────────────────────────
@@ -63,7 +60,6 @@ export const products: Product[] = [
     ],
     category: 'men',
     inStock: true,
-    stripePriceId: 'price_1TQaeSJzxUWJqIBzXfoXpOvp',
   },
   {
     id: 'tan-blingout-bart-hoodie',
@@ -76,7 +72,6 @@ export const products: Product[] = [
     ],
     category: 'men',
     inStock: true,
-    stripePriceId: 'price_1TQaeRJzxUWJqIBzOeYI0o2h',
   },
   {
     id: 'black-party-bart-hoodie',
@@ -89,7 +84,6 @@ export const products: Product[] = [
     ],
     category: 'men',
     inStock: true,
-    stripePriceId: 'price_1TQaeSJzxUWJqIBzqMrHHYSo',
   },
   {
     id: 'black-redbottom-bart-hoodie',
@@ -102,7 +96,6 @@ export const products: Product[] = [
     ],
     category: 'men',
     inStock: true,
-    stripePriceId: 'price_1TQaeSJzxUWJqIBzhBVBAyxT',
   },
 
   // ── Women's T-Shirts ─────────────────────────────────────────────
@@ -117,7 +110,6 @@ export const products: Product[] = [
     ],
     category: 'women',
     inStock: true,
-    stripePriceId: 'price_1TQaeVJzxUWJqIBz3PtFB70r',
   },
   {
     id: 'women-pink-party-bart-tee',
@@ -130,7 +122,6 @@ export const products: Product[] = [
     ],
     category: 'women',
     inStock: true,
-    stripePriceId: 'price_1TQaeVJzxUWJqIBzDm8hnWhK',
   },
   {
     id: 'women-white-party-bart-tee',
@@ -143,7 +134,6 @@ export const products: Product[] = [
     ],
     category: 'women',
     inStock: true,
-    stripePriceId: 'price_1TQaeRJzxUWJqIBzrTZ3mjgS',
   },
 
   // ── Hats ─────────────────────────────────────────────────────────
@@ -206,7 +196,6 @@ export const products: Product[] = [
     ],
     category: 'hats',
     inStock: true,
-    stripePriceId: 'price_1TQaeTJzxUWJqIBzIAZQF7jy',
   },
   {
     id: 'hellcat-hat',
@@ -234,7 +223,6 @@ export const products: Product[] = [
     ],
     category: 'hats',
     inStock: true,
-    stripePriceId: 'price_1TQaeRJzxUWJqIBzLlq8oGQ7',
   },
 ];
 

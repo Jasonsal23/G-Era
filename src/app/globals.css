@@ -62,3 +62,12 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--accent);
   border-color: var(--accent);
 }
+
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}

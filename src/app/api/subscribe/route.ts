@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { generateOrReusePromoCode } from '@/lib/promo';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const DISCOUNT_CODE = 'GERA10';
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,6 +11,8 @@ export async function POST(request: NextRequest) {
     if (!email || !email.includes('@')) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
     }
+
+    const promo = await generateOrReusePromoCode(email);
 
     await resend.emails.send({
       from: 'G.Era <hello@g-era.com>',
@@ -46,7 +48,7 @@ export async function POST(request: NextRequest) {
                       Your code
                     </p>
                     <p style="font-size:32px;font-weight:900;letter-spacing:8px;color:#D4AF37;margin:0;font-family:monospace;">
-                      ${DISCOUNT_CODE}
+                      ${promo.code}
                     </p>
                     <p style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:#888888;margin:8px 0 0 0;font-family:monospace;">
                       10% off your first order
@@ -73,7 +75,7 @@ export async function POST(request: NextRequest) {
       `,
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, code: promo.code });
   } catch (error) {
     console.error('Subscribe error:', error);
     return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });

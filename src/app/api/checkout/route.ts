@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createCheckoutSession } from '@/lib/stripe';
+import { randomUUID } from 'crypto';
+import { createCheckoutLink } from '@/lib/square';
 import { validateStock } from '@/lib/inventory';
+import { SHIPPING_RATES } from '@/lib/shipping';
+import { validatePromoCode } from '@/lib/promo';
+import { createPendingOrder } from '@/lib/orders';
+import { getProductById } from '@/data/products';
 import type { CheckoutRequest } from '@/types';
 
 export async function POST(request: NextRequest) {
@@ -14,9 +19,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const shipping = SHIPPING_RATES[body.shippingMethod];
+    if (!shipping) {
+      return NextResponse.json(
+        { error: 'Invalid shipping method' },
+        { status: 400 }
+      );
+    }
+
     const origin = request.headers.get('origin') || 'http://localhost:3000';
 
-    // Validate stock before creating Stripe session
+    // Validate stock before creating the Square order
     const stockError = await validateStock(
       body.items.map((item) => ({
         productId: item.productId,
@@ -29,38 +42,69 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: stockError }, { status: 400 });
     }
 
-    const lineItems = body.items.map((item) => ({
-      price: item.priceId,
-      quantity: item.quantity,
-    }));
-
-    // Build metadata — product IDs and variants so the webhook can decrement inventory
-    const metadata: Record<string, string> = {};
-    body.items.forEach((item, index) => {
-      metadata[`item_${index}_product_id`] = item.productId;
-      if (item.variantLabel) {
-        metadata[`item_${index}_variant`] = item.variantLabel;
+    // Resolve price server-side from product data — never trust a client-sent price.
+    const lineItems = body.items.map((item) => {
+      const product = getProductById(item.productId);
+      if (!product) {
+        throw new Error(`Unknown product: ${item.productId}`);
       }
-      if (item.productName) {
-        metadata[`item_${index}_name`] = item.productName;
-      }
+      return {
+        name: item.variantLabel ? `${product.name} — ${item.variantLabel}` : product.name,
+        quantity: item.quantity,
+        basePriceInCents: product.priceInCents,
+        productId: item.productId,
+        variantLabel: item.variantLabel ?? '',
+      };
     });
 
-    // Free standard shipping on all orders; express available for upgrade
-    const shippingOptions = [
-      { shipping_rate: 'shr_1THuPfJwIdpAFh8r456b2cd0' }, // free
-      { shipping_rate: 'shr_1THuM2JwIdpAFh8rcvpQXce5' }, // express
-    ];
+    const taxPercent = Number(process.env.SQUARE_TAX_RATE_PERCENT ?? '0');
+    const referenceId = randomUUID();
 
-    const session = await createCheckoutSession(
+    // Re-validate the promo code server-side — never trust a discount the client claims was applied.
+    const promo = body.promoCode ? await validatePromoCode(body.promoCode) : null;
+
+    const paymentLink = await createCheckoutLink(
       lineItems,
-      `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-      `${origin}/shop`,
-      shippingOptions,
-      Object.keys(metadata).length > 0 ? metadata : undefined
+      shipping.label,
+      shipping.costInCents,
+      taxPercent,
+      `${origin}/success?ref=${referenceId}`,
+      referenceId,
+      promo ? { code: promo.code, label: promo.label, percentOff: promo.percentOff } : undefined
     );
 
-    return NextResponse.json({ sessionUrl: session.url });
+    if (!paymentLink?.url) {
+      throw new Error('Square did not return a checkout URL');
+    }
+
+    const subtotalInCents = lineItems.reduce(
+      (total, item) => total + item.basePriceInCents * item.quantity,
+      0
+    );
+    const discountInCents = promo ? Math.round((subtotalInCents * promo.percentOff) / 100) : 0;
+    const taxInCents = Math.round(((subtotalInCents - discountInCents) * taxPercent) / 100);
+    const totalInCents = subtotalInCents - discountInCents + shipping.costInCents + taxInCents;
+
+    await createPendingOrder({
+      referenceId,
+      squareOrderId: paymentLink.orderId,
+      items: lineItems.map((item) => ({
+        productId: item.productId,
+        name: item.name,
+        variantLabel: item.variantLabel,
+        quantity: item.quantity,
+        priceInCents: item.basePriceInCents,
+      })),
+      subtotalInCents,
+      shippingInCents: shipping.costInCents,
+      discountInCents,
+      taxInCents,
+      totalInCents,
+      shippingMethod: body.shippingMethod,
+      promoCode: promo?.code,
+    });
+
+    return NextResponse.json({ sessionUrl: paymentLink.url });
   } catch (error) {
     console.error('Checkout error:', error);
     return NextResponse.json(

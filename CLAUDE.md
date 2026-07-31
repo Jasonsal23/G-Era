@@ -8,7 +8,7 @@
 | `npm run build`                                          | Creates production build                          |
 | `npm run lint`                                           | Runs ESLint for code quality                      |
 | `npm run type-check`                                     | Runs TypeScript compiler check                    |
-| `stripe listen --forward-to localhost:3000/api/webhooks` | Local webhook testing                             |
+| `ngrok http 3000`                                         | Tunnel for local Square webhook testing (see below) |
 
 ---
 
@@ -16,17 +16,18 @@
 
 - **Framework:** Next.js (App Router)
 - **Language:** TypeScript (Strict Mode)
-- **Payments:** Stripe (Checkout Sessions + Webhooks)
+- **Payments:** Square (Payment Links + Webhooks)
 - **Styling:** Tailwind CSS
 - **State:** Zustand (Cart & UI State)
 - **Icons:** Lucide React
 
 ### Folder Structure
 
-- `@/app/api/checkout`: Stripe session creation.
+- `@/app/api/checkout`: Square Payment Link creation.
 - `@/app/api/webhooks`: Secure payment verification logic.
 - `@/components/ui`: Atomic, reusable sharp-edged components.
-- `@/lib/stripe.ts`: Stripe SDK configuration.
+- `@/lib/square.ts`: Square SDK configuration.
+- `@/lib/shipping.ts`: Shared shipping rate definitions (used by both client cart UI and the server checkout route).
 - `@/types`: Shared TypeScript interfaces (`Product`, `Order`, `CartItem`).
 
 ---
@@ -56,22 +57,26 @@
 
 ## 🔐 Security & E-commerce Rules
 
-> **CRITICAL:** Never trust the "Price" sent from the frontend. Always fetch the price from your database or Stripe using a `priceId` during the checkout creation on the server.
+> **CRITICAL:** Never trust the "Price" (or shipping cost) sent from the frontend. Always resolve it server-side — look up the product by `productId` via `getProductById()` and the shipping cost via `SHIPPING_RATES[shippingMethod]` — during checkout creation.
 
 - **Currency Math:** All money must be handled as **integers in cents** (e.g., **$15.00** is `1500`) to avoid floating-point errors.
-- **Webhooks:** Every webhook handler must implement `stripe.webhooks.constructEvent` to verify the signature before fulfilling orders.
-- **Inventory:** Validate stock levels in the server-side checkout route before redirecting to Stripe.
+- **Webhooks:** Every webhook handler must verify the signature via `WebhooksHelper.verifySignature` (HMAC-SHA256 over the notification URL + raw body) before fulfilling orders.
+- **Inventory:** Validate stock levels in the server-side checkout route before redirecting to Square.
 - **Imagery:** Use high-contrast black and white photography for lifestyle shots; keep product-only shots in full color to highlight the "Bling" details (Gold/Yellow).
 
 ---
 
 ## 📦 Fulfillment Logic
 
-1.  User clicks "Checkout" → Call `/api/checkout`.
-2.  Server creates Stripe Session using Server-Side pricing → Redirects user.
-3.  User pays on Stripe's secure domain.
-4.  Stripe sends `checkout.session.completed` to `/api/webhooks`.
-5.  Server verifies signature → Updates database → Triggers shipping/email.
+1.  User picks a shipping method and clicks "Checkout" → Call `/api/checkout`.
+2.  Server creates a Square Payment Link using server-side pricing → Redirects user.
+3.  User pays on Square's secure hosted checkout page.
+4.  Square sends `payment.updated` (status `COMPLETED`) to `/api/webhooks`.
+5.  Server verifies signature → Decrements inventory in Supabase.
+
+**Known gaps (flagged at Stripe→Square migration, not yet resolved):**
+- Tax is a single flat rate (`SQUARE_TAX_RATE_PERCENT`), not automatic jurisdiction-based calculation.
+- No promo/discount code support on the hosted checkout page.
 
 ---
 

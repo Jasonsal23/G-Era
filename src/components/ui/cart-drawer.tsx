@@ -2,14 +2,17 @@
 
 import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Button } from './button';
 import { useCartStore } from '@/store/cart';
+import { useInventoryStore } from '@/store/inventory';
 import { useLanguage } from '@/context/language-context';
 
 const SIZES = ['S', 'M', 'L', 'XL', '2XL'];
 
 export const CartDrawer = () => {
   const { items, isOpen, setCartOpen, removeItem, updateQuantity, updateItemVariant } = useCartStore();
+  const getStock = useInventoryStore((s) => s.getStock);
   const { t } = useLanguage();
 
   const totalPriceInCents = items.reduce(
@@ -22,35 +25,6 @@ export const CartDrawer = () => {
       style: 'currency',
       currency: 'USD',
     }).format(priceInCents / 100);
-  };
-
-  const handleCheckout = async () => {
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          items: items.map((item) => ({
-            priceId: item.product.stripePriceId,
-            productId: item.product.id,
-            quantity: item.quantity,
-            priceInCents: item.product.priceInCents,
-            productName: item.product.name,
-            variantLabel: item.selectedVariant,
-          })),
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.sessionUrl) {
-        window.location.href = data.sessionUrl;
-      }
-    } catch (error) {
-      console.error('Checkout error:', error);
-    }
   };
 
   if (!isOpen) return null;
@@ -143,27 +117,41 @@ export const CartDrawer = () => {
                         </p>
                       </div>
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center border-2 border-foreground">
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.product.id, item.quantity - 1, item.selectedVariant)
-                            }
-                            className="p-1 transition-colors hover:bg-foreground hover:text-background"
-                          >
-                            <Minus size={16} />
-                          </button>
-                          <span className="px-3 font-mono text-sm">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.product.id, item.quantity + 1, item.selectedVariant)
-                            }
-                            className="p-1 transition-colors hover:bg-foreground hover:text-background"
-                          >
-                            <Plus size={16} />
-                          </button>
-                        </div>
+                        {(() => {
+                          const stock = getStock(item.product.id, item.selectedVariant ?? '');
+                          const atMax = item.quantity >= stock;
+                          return (
+                            <div>
+                              <div className="flex items-center border-2 border-foreground">
+                                <button
+                                  onClick={() =>
+                                    updateQuantity(item.product.id, item.quantity - 1, item.selectedVariant)
+                                  }
+                                  className="p-1 transition-colors hover:bg-foreground hover:text-background"
+                                >
+                                  <Minus size={16} />
+                                </button>
+                                <span className="px-3 font-mono text-sm">
+                                  {item.quantity}
+                                </span>
+                                <button
+                                  onClick={() =>
+                                    updateQuantity(item.product.id, item.quantity + 1, item.selectedVariant)
+                                  }
+                                  disabled={atMax}
+                                  className="p-1 transition-colors hover:bg-foreground hover:text-background disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-foreground"
+                                >
+                                  <Plus size={16} />
+                                </button>
+                              </div>
+                              {atMax && (
+                                <p className="mt-1 text-[10px] uppercase tracking-wide text-gray-400">
+                                  {t.cart.maxStock}
+                                </p>
+                              )}
+                            </div>
+                          );
+                        })()}
                         <button
                           onClick={() => removeItem(item.product.id, item.selectedVariant)}
                           className="text-sm uppercase tracking-wider text-gray-500 hover:text-foreground"
@@ -186,14 +174,11 @@ export const CartDrawer = () => {
                   {formatPrice(totalPriceInCents)}
                 </span>
               </div>
-              <Button
-                variant="accent"
-                size="lg"
-                className="w-full"
-                onClick={handleCheckout}
-              >
-                {t.cart.checkout}
-              </Button>
+              <Link href="/checkout" onClick={() => setCartOpen(false)}>
+                <Button variant="accent" size="lg" className="w-full">
+                  {t.cart.checkout}
+                </Button>
+              </Link>
             </div>
           )}
         </div>
