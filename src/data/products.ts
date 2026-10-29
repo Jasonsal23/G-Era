@@ -15,7 +15,7 @@ export const products: Product[] = [
     id: 'black-blingout-bart-tee',
     name: 'Gold AK Bart Tee — Black',
     description: 'Strapped, blinged out, and ready for whatever — that\'s the G.Era way. Gold AK on the back, skull belt buckle, no fear in the eyes. This ain\'t a cartoon tee. This is a statement. Heavyweight black cotton, bold back graphic. Wear it like you mean it.',
-    priceInCents: 5000,
+    priceInCents: 3500,
     images: [
       '/images/products/blackblingoutbartthsirt-back.png',
       '/images/products/blackblingoutbartthsirt-front.png',
@@ -27,7 +27,7 @@ export const products: Product[] = [
     id: 'black-party-bart-tee',
     name: 'Champagne Bart Tee — Black',
     description: 'La fiesta no empieza hasta que llegamos. Gold medallion out, red bottoms kicked up, champagne in hand — this is how the G.Era shows up. Black heavyweight tee, full back graphic. Los que saben, ya saben.',
-    priceInCents: 5000,
+    priceInCents: 3500,
     images: [
       '/images/products/blackpartybarttshirt-back.png',
       '/images/products/blackpartybarttshirt-front.png',
@@ -39,7 +39,7 @@ export const products: Product[] = [
     id: 'green-redbottom-bart-tee',
     name: 'Red Bottom Bart Tee — Olive',
     description: 'Tuxedo on, red bottoms flipped, skull ring on the finger — dressed like money doesn\'t even cover it. This is that belico luxury energy on an olive tee that hits different from every angle. Premium heavyweight cotton. Not for the weak.',
-    priceInCents: 5000,
+    priceInCents: 3500,
     images: [
       '/images/products/greenredbottombarttshirt-back.png',
       '/images/products/greenredbottombarttshirt-front.png',
@@ -53,7 +53,7 @@ export const products: Product[] = [
     id: 'green-belico-bart-hoodie',
     name: 'Belico Bart Hoodie — Olive',
     description: 'Siempre listo. Full tactical gear, vest loaded, saluting because he runs the operation — not the other way around. Army green heavyweight fleece built for the ones who stay ready. Belico from the inside out.',
-    priceInCents: 7500,
+    priceInCents: 4500,
     images: [
       '/images/products/greenbelicobarthoodie-back.png',
       '/images/products/greenbelicobarthoodie-front.png',
@@ -65,7 +65,7 @@ export const products: Product[] = [
     id: 'tan-blingout-bart-hoodie',
     name: 'Gold AK Bart Hoodie — Tan',
     description: 'Same streets, different colorway. Gold AK on the back, skull accessories stacked, all on a premium tan fleece that moves with you. Brushed interior, clean cut. The G.Era hits in every color.',
-    priceInCents: 7500,
+    priceInCents: 4500,
     images: [
       '/images/products/tanblingoutbarthoodie-back.png',
       '/images/products/tanblingoutbarthoodie-front.png',
@@ -77,7 +77,7 @@ export const products: Product[] = [
     id: 'black-party-bart-hoodie',
     name: 'Champagne Bart Hoodie — Black',
     description: 'When the celebration moves to the streets, you need the right fit. Gold medallion swinging, red bottoms up, champagne in hand — the whole drip, now on heavyweight black fleece. This is what making it looks like.',
-    priceInCents: 7500,
+    priceInCents: 4500,
     images: [
       '/images/products/blackpartybarthoodie-back.png',
       '/images/products/blackpartybarthoodie-front.png',
@@ -89,7 +89,7 @@ export const products: Product[] = [
     id: 'black-redbottom-bart-hoodie',
     name: 'Red Bottom Bart Hoodie — Black',
     description: 'Dressed to the nines and still belico — red bottoms showing, skull ring on the finger, tuxedo on a black hoodie that hits harder than anything in your closet. This is street luxury, no compromise.',
-    priceInCents: 7500,
+    priceInCents: 4500,
     images: [
       '/images/products/blackredbottombarthoodie-back.png',
       '/images/products/blackredbottombarthoodie-front.png',
@@ -103,7 +103,7 @@ export const products: Product[] = [
     id: 'women-orange-redbottom-bart-tee',
     name: 'Red Bottom Bart Tee — Salmon Pink',
     description: 'Las que mandan wear Pink. Tuxedo drip, red bottoms kicked up, skull ring out — rhinestones on every bling detail that catch the light from across the room. All on a bold pink tee built for women who don\'t move quiet. Premium cotton, fitted cut. Walk in and take over.',
-    priceInCents: 5000,
+    priceInCents: 3500,
     images: [
       '/images/products/womenredbottombarttshirtorange-back.png',
       '/images/products/womenredbottombarttshirtorange-front.png',
@@ -115,7 +115,7 @@ export const products: Product[] = [
     id: 'women-pink-party-bart-tee',
     name: 'Champagne Bart Tee — Rose Pink',
     description: 'Pink doesn\'t mean soft. Gold medallion out, red bottoms kicked up, champagne already open — rhinestones on the bling details that hit different under every light. This tee moves with the energy of a woman who knows exactly where she\'s going. Heavyweight pink cotton, full drip on the back.',
-    priceInCents: 5000,
+    priceInCents: 3500,
     images: [
       '/images/products/womenpartybartpinktshirt-back.png',
       '/images/products/womenpartybartpinktshirt-front.png',
@@ -127,7 +127,7 @@ export const products: Product[] = [
     id: 'women-white-party-bart-tee',
     name: 'Champagne Bart Tee — Cream',
     description: 'Clean white, full drip — the hardest combination in the game. Gold medallion, champagne, red bottoms all on the back, with rhinestones on the bling pieces that pop against the crisp white. Walk in looking like a whole moment. Heavyweight cotton, drop shoulders. Sin pretextos.',
-    priceInCents: 5000,
+    priceInCents: 3500,
     images: [
       '/images/products/womenpartybartwhitetshirt-back.png',
       '/images/products/womenpartybartwhitetshirt-front.png',
